@@ -19,23 +19,30 @@ ulimit -s unlimited
 ulimit -a
 
 mkdir -p INPUT RESTART
-cp ${COMOUT}/anl.${dom}.${tmmark}/*.nc INPUT
+
+# Choose INPUT source
+
+if [ $cycle_def == pre_forecast ] ; then
+  cp ${COMOUT}/gfsanl.tm12/*.nc INPUT
+else if [ $cycle_def == analysis ] ; then
+  cp ${COMOUT}/anl.${dom}.${tmmark}/*.nc INPUT
+else
+  echo "Cycle Def not specified! pre_forecast or analysis"
+  exit 12
+fi
+
+
+
+# Check for boundary conditions
+# A free forecast might be any length
+# Compute ceiling of NHRS/3 to get correct answer for any fcst length.
 
 numbndy=`ls -l INPUT/gfs_bndy.tile7*.nc | wc -l`
-let "numbndy_check=$NHRS/3+1"
-
-if [ $tmmark = tm00 ] ; then
-  if [ $numbndy -ne $numbndy_check ] ; then
-    export err=13
-    echo "Don't have all BC files at tm00, abort run"
-    exit $err
-  fi
-else
-  if [ $numbndy -ne 2 ] ; then
-    export err=2
-    echo "Don't have both BC files at ${tmmark}, abort run"
-    exit $err
-  fi
+numbndy_check=$(echo "($NHRS + 3 - 1)/3 + 1" | bc)
+if [ $numbndy -ne $numbndy_check ] ; then
+  export err=13
+  echo "Don't have all $numbndy_check BC files, abort run"
+  exit $err
 fi
 
 #---------------------------------------------- 
@@ -90,6 +97,7 @@ ln -sf ${CASE}_grid.tile7.halo3.nc ${CASE}_grid.tile7.nc
 ln -sf ${CASE}_grid.tile7.halo4.nc grid.tile7.halo4.nc
 ln -sf ${CASE}_oro_data.tile7.halo0.nc oro_data.nc
 ln -sf ${CASE}_oro_data.tile7.halo4.nc oro_data.tile7.halo4.nc
+
 # Initial Conditions are needed for SAR but not SAR-DA
 if [ $model = fv3sar ] ; then
   ln -sf sfc_data.tile7.nc sfc_data.nc
@@ -104,38 +112,65 @@ cd ..
 CCPP=${CCPP:-"false"}
 CCPP_SUITE=${CCPP_SUITE:-"FV3_GFS_2017_gfdlmp_regional"}
 
-if [ $tmmark = tm00 ] ; then
-# Free forecast with DA (warm start)
-  if [ $model = fv3sar_da ] ; then
-    cp ${PARMfv3}/input_sar_da.nml input.nml.tmp 
-    cat input.nml.tmp | \
+
+# Load in namelists for model and DA.
+
+
+# Firstguess uses, diff from input_sar_conus: blocksize 24 vs 27, fv_debug bool, range_warn bool, print_freq -1 vs 6
+cp ${PARMfv3}/input_sar_firstguess.nml input.nml.tmp
+
+
+
+# Non-DA with CPP
+cp ${PARMfv3}/input_sar_${dom}_ccpp.nml input.nml.tmp
+
+# Non-DA without CCPP
+cp ${PARMfv3}/input_sar_${dom}.nml input.nml
+
+# Free forecast with DA (warm start) diff with hourly (below) is bc_update_interval = 3
+# Diff from input_sar_firstguess
+#    make_nh, na_init, external_ic, nggps_ic, mountain, warm_start
+cp ${PARMfv3}/input_sar_da.nml input.nml.tmp  
+
+# Hourly cycling bc_update_interval = 1
+cp ${PARMfv3}/input_sar_da_hourly.nml input.nml.tmp 
+
+# --0-0-0-0-0-0-0--
+
+if [ $model = fv3sar_da ] ; then
+  cp ${PARMfv3}/input_sar_da.nml input.nml.tmp 
+  cat input.nml.tmp | \
+      sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
+
+  if [ $cycle_def = hrly_cycle ] ; then
+  cat input.nml | \
         sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
+
+  cp ${PARMfv3}/model_configure_sar_da_hourly.tmp model_configure.tmp
 # Free forecast without DA (cold start)
-  elif [ $model = fv3sar ] ; then 
-    if [ $CCPP  = true ] || [ $CCPP = TRUE ] ; then
-      cp ${PARMfv3}/input_sar_${dom}_ccpp.nml input.nml.tmp
+elif [ $model = fv3sar ] ; then 
+  if [ $CCPP  = true ] || [ $CCPP = TRUE ] ; then
+    cp ${PARMfv3}/input_sar_${dom}_ccpp.nml input.nml.tmp
+    cat input.nml.tmp | \
+        sed s/CCPP_SUITE/\'$CCPP_SUITE\'/ | \
+        sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
+    cp ${PARMfv3}/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml
+  else
+    cp ${PARMfv3}/input_sar_${dom}.nml input.nml
+    if [ $dom = conus ] ; then
+      mv input.nml input.nml.tmp
       cat input.nml.tmp | \
-          sed s/CCPP_SUITE/\'$CCPP_SUITE\'/ | \
           sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
-      cp ${PARMfv3}/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml
-    else
-      cp ${PARMfv3}/input_sar_${dom}.nml input.nml
-      if [ $dom = conus ] ; then
-        mv input.nml input.nml.tmp
-        cat input.nml.tmp | \
-            sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
-      elif [ ! -e input.nml ] ; then
-         echo "FATAL ERROR: no input_sar_${dom}.nml in PARMfv3 directory.  Create one!"
-      fi
+    elif [ ! -e input.nml ] ; then
+       echo "FATAL ERROR: no input_sar_${dom}.nml in PARMfv3 directory.  Create one!"
     fi
   fi
-  cp ${PARMfv3}/model_configure_sar.tmp_${dom} model_configure.tmp
+fi
+cp ${PARMfv3}/model_configure_sar.tmp_${dom} model_configure.tmp
 
+
+# Hourly cycling
 else
-  cp ${PARMfv3}/input_sar_da_hourly.nml input.nml.tmp
-  cat input.nml.tmp | \
-        sed s/_TASK_X_/${TASK_X}/ | sed s/_TASK_Y_/${TASK_Y}/  >  input.nml
-  cp ${PARMfv3}/model_configure_sar_da_hourly.tmp model_configure.tmp
 fi
 
 cp ${PARMfv3}/d* .
