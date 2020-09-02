@@ -91,6 +91,9 @@
 # "dynamics",  "omg100",      "omg100",     "atmos_4xdaily", "all", .false.,  "none", 2
 # "dynamics",  "omg50",       "omg50",      "atmos_4xdaily", "all", .false.,  "none", 2
 # "dynamics",  "omg10",       "omg10",      "atmos_4xdaily", "all", .false.,  "none", 2
+####
+# "dynamics",  "cape",        "sbcape",     "atmos_4xdaily", "all", .false.,  "none", 2
+# "dynamics",  "cin",         "sbcin",      "atmos_4xdaily", "all", .false.,  "none", 2
 ###
 # gfs static data
 ###
@@ -121,15 +124,32 @@
 #"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
 #"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
 
-"gfs_dyn",   "wmaxup",        "upvvelmax",   "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "wmaxdn",        "dnvvelmax",   "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "uhmax03",       "uhmax03",     "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "uhmax25",       "uhmax25",     "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "uhmin03",       "uhmin03",     "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "uhmin25",       "uhmin25",     "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "maxvort01",     "maxvort01",   "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "maxvort02",     "maxvort02",   "fv3_history",           "all",  .false.,  "none", 2
-"gfs_dyn",   "maxvorthy1",    "maxvorthy1",  "fv3_history",           "all",  .false.,  "none", 2
+###
+# Max hourly fields
+###
+"gfs_dyn",   "wmaxup",      "upvvelmax",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "wmaxdn",      "dnvvelmax",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "uhmax03",     "uhmax03",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "uhmax25",     "uhmax25",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "uhmin03",     "uhmin03",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "uhmin25",     "uhmin25",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "maxvort01",   "maxvort01",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "maxvort02",   "maxvort02",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "maxvorthy1",  "maxvorthy1",   "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "ustm",        "ustm",         "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "vstm",        "vstm",         "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "srh01",       "srh01",        "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",   "srh03",       "srh03",        "fv3_history",    "all",  .false.,  "none",  2
+
+"gfs_phys",  "u10max",       "u10max",       "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "v10max",       "v10max",       "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "spd10max",     "spd10max",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "refdmax",      "refdmax",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "refdmax263k",  "refdmax263k",  "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "t02max",       "t02max",       "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "t02min",       "t02min",       "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "rh02max",      "rh02max",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",  "rh02min",      "rh02min",      "fv3_history2d",  "all",  .false.,  "none",  2
 
 "gfs_phys",  "ALBDO_ave",     "albdo_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcp_ave",   "cprat_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
@@ -179,7 +199,7 @@
 "gfs_phys",    "psurf",       "pressfc",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "u10m",        "ugrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "v10m",        "vgrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
-"gfs_sfc",     "crain",       "crain",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "crain",       "crain",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "tprcp",       "tprcp",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "hgtsfc",      "orog",      "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "weasd",       "weasd",     "fv3_history2d",  "all",  .false.,  "none",  2

@@ -307,13 +307,23 @@ print_info_msg "$VERBOSE" "
 Creating links with names that FV3 looks for in the INPUT subdirectory
 of the current cycle's run directory (CYCLE_DIR)..."
 
+BKTYPE=1    # use INPUT
+if [ -r ${CYCLE_DIR}/INPUT/fv_tracer.res.tile1.nc ]; then
+  BKTYPE=0  # use RESTART
+fi
+print_info_msg "$VERBOSE" "
+The forecast has BKTYPE $BKTYPE (1:cold start ; 2 cycling)"
+
 cd_vrfy ${CYCLE_DIR}/INPUT
 #ln_vrfy -sf gfs_data.tile${TILE_RGNL}.halo${NH0}.nc gfs_data.nc
 #ln_vrfy -sf sfc_data.tile${TILE_RGNL}.halo${NH0}.nc sfc_data.nc
 
 relative_or_null=""
-
-target="gfs_data.tile${TILE_RGNL}.halo${NH0}.nc"
+if [ ${BKTYPE} -eq 1 ]; then
+  target="gfs_data.tile${TILE_RGNL}.halo${NH0}.nc"
+else
+  target="fv_core.res.tile1.nc"
+fi
 symlink="gfs_data.nc"
 if [ -f "${target}" ]; then
   ln_vrfy -sf ${relative_or_null} $target $symlink
@@ -323,15 +333,22 @@ Cannot create symlink because target does not exist:
   target = \"$target}\""
 fi
 
-target="sfc_data.tile${TILE_RGNL}.halo${NH0}.nc"
-symlink="sfc_data.nc"
-if [ -f "${target}" ]; then
-  ln_vrfy -sf ${relative_or_null} $target $symlink
-else
-  print_err_msg_exit "\
+if [ ${BKTYPE} -eq 1 ]; then
+  target="sfc_data.tile${TILE_RGNL}.halo${NH0}.nc"
+  symlink="sfc_data.nc"
+  if [ -f "${target}" ]; then
+    ln_vrfy -sf ${relative_or_null} $target $symlink
+  else
+    print_err_msg_exit "\
 Cannot create symlink because target does not exist:
   target = \"$target}\""
+  fi
+
+else
+  print_info_msg "$VERBOSE" "
+  sfc_data.nc is available at INPUT directory"
 fi
+
 #
 #-----------------------------------------------------------------------
 #
@@ -404,8 +421,13 @@ model input files in the main experiment directory..."
 
 ln_vrfy -sf -t ${CYCLE_DIR} ${DATA_TABLE_FP}
 ln_vrfy -sf -t ${CYCLE_DIR} ${FIELD_TABLE_FP}
-ln_vrfy -sf -t ${CYCLE_DIR} ${FV3_NML_FP}
 ln_vrfy -sf -t ${CYCLE_DIR} ${NEMS_CONFIG_FP}
+
+if [ ${BKTYPE} -eq 0 ]; then  # RESTART
+  ln_vrfy -sf  ${FV3_NML_RESTART_FN} ${CYCLE_DIR}/input.nml
+else
+  ln_vrfy -sf -t ${CYCLE_DIR} ${FV3_NML_FP}
+fi
 
 if [ "${USE_CCPP}" = "TRUE" ]; then
 

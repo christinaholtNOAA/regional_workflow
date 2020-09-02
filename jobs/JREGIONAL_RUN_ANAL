@@ -3,8 +3,9 @@
 #
 #-----------------------------------------------------------------------
 #
-# This script runs the post-processor (UPP) on the NetCDF output files
-# of the write component of the FV3SAR model.
+# This script copies files from various directories into the experiment
+# directory, creates links to some of them, and modifies others (e.g. 
+# templates) to customize them for the current experiment setup.
 #
 #-----------------------------------------------------------------------
 #
@@ -26,7 +27,7 @@
 #
 #-----------------------------------------------------------------------
 #
-{ save_shell_opts; set -u -x; } > /dev/null 2>&1
+{ save_shell_opts; set -u +x; } > /dev/null 2>&1
 #
 #-----------------------------------------------------------------------
 #
@@ -51,53 +52,31 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the J-job script for the task that runs the post-processor (UPP)
-on the output files corresponding to a specified forecast hour.
+This is the J-job script for the task that runs a analysis with FV3 for 
+the specified cycle.
 ========================================================================"
 #
 #-----------------------------------------------------------------------
 #
-# If it doesn't already exist, create the directory (postprd_dir) in 
-# which to store post-processing output.  (Note that postprd_dir may al-
-# ready have been created by this post-processing script run for a dif-
-# ferent forecast hour.)  Also, create a temporary work directory (FHR_-
-# DIR) for the current forecast hour being processed.  fhr_dir will be 
-# deleted later after the processing for the current forecast hour is 
-# complete.  Then change location to fhr_dir.
-#
-# Note that there may be a preexisting version of fhr_dir from previous 
-# runs of this script for the current forecast hour (e.g. from the work-
-# flow task that runs this script failing and then being called again).  
-# Thus, we first make sure preexisting versions are deleted.
+# Create the INPUT and RESTART directories under the cycle directory.
 #
 #-----------------------------------------------------------------------
 #
-if [ "${RUN_ENVIR}" = "nco" ]; then
-  COMOUT="$COMROOT/$NET/$envir/$RUN.$PDY/$cyc"
-  postprd_dir="$COMOUT"
-else
-  postprd_dir="${CYCLE_DIR}/postprd"
+ANALWORKDIR=${CYCLE_DIR}/ANAL_GSI
+if [ -r ${ANALWORKDIR} ]; then
+  rm -fr ${ANALWORKDIR}
 fi
-mkdir_vrfy -p "${postprd_dir}"
-
-fhr_dir="${postprd_dir}/$fhr"
-check_for_preexist_dir "${fhr_dir}" "delete"
-mkdir_vrfy -p "${fhr_dir}"
-
-cd_vrfy "${fhr_dir}"
+mkdir_vrfy -p ${ANALWORKDIR}
 #
 #-----------------------------------------------------------------------
 #
 # Call the ex-script for this J-job and pass to it the necessary varia-
-# bles. 
+# bles.
 #
 #-----------------------------------------------------------------------
 #
-$SCRIPTSDIR/exregional_run_post.sh \
-  cycle_dir="${CYCLE_DIR}" \
-  postprd_dir="${postprd_dir}" \
-  fhr_dir="${fhr_dir}" \
-  fhr="${fhr}" || \
+$SCRIPTSDIR/exregional_run_analysis.sh \
+  CYCLE_DIR="${CYCLE_DIR}" ANALWORKDIR="${ANALWORKDIR}" CYCLE_ROOT="${CYCLE_ROOT}" || \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
 #

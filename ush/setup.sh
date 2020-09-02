@@ -240,14 +240,6 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# Make sure that DOT_OR_USCORE is set to a valid value.
-#
-#-----------------------------------------------------------------------
-#
-check_var_valid_value "DOT_OR_USCORE" "valid_vals_DOT_OR_USCORE"
-#
-#-----------------------------------------------------------------------
-#
 # Convert machine name to upper case if necessary.  Then make sure that
 # MACHINE is set to a valid value.
 #
@@ -332,10 +324,9 @@ Then remove this message and rerun."
 "CHEYENNE")
 #
   NCORES_PER_NODE=36
-  SCHED="pbspro"
+  SCHED="pbs"
   QUEUE_DEFAULT=${QUEUE_DEFAULT:-"regular"}
-  QUEUE_HPSS=${QUEUE_HPSS:-"regular"}
-  QUEUE_HPSS_TAG="queue"       # pbspro does not support "partition" tag
+  QUEUE_HPSS=${QUEUE_HPSS:-""}
   QUEUE_FCST=${QUEUE_FCST:-"regular"}
 #
 esac
@@ -688,8 +679,8 @@ case $MACHINE in
   SFC_CLIMO_INPUT_DIR="/scratch1/NCEPDEV/da/George.Gayno/ufs_utils.git/climo_fields_netcdf"
   ;;
 "CHEYENNE")
-  FIXgsm="/glade/p/ral/jntp/UFS_CAM/fix/fix_am"
-  SFC_CLIMO_INPUT_DIR="/glade/p/ral/jntp/UFS_CAM/fix/climo_fields_netcdf"
+  FIXgsm="/glade/p/ral/jntp/UFS_CAM/fix_am"
+  SFC_CLIMO_INPUT_DIR="/glade/p/ral/jntp/UFS_CAM/climo_fields_netcdf"
   ;;
 
 *)

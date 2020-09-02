@@ -111,6 +111,9 @@
      full_zs_filter = .F. !unreleased feature
      nord_zs_filter = 4
      n_zs_filter = 0 ! safety
+     regional_bcs_from_gsi = .false.
+     write_restart_with_bcs = .false.
+     nrows_blend = 10
 /
 
 &surf_map_nml
