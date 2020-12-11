@@ -185,12 +185,11 @@ case ${PREDEF_GRID_NAME} in
 
   ESGgrid_WIDE_HALO_WIDTH=6
 
-  DT_ATMOS="40"
-
   LAYOUT_X="18"
   LAYOUT_Y="12"
   BLOCKSIZE="48"
 
+  DT_ATMOS="40"
 
   if [ "$QUILTING" = "TRUE" ]; then
     WRTCMP_write_groups="1"
