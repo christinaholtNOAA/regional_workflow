@@ -66,6 +66,7 @@ FV3_HRRR:
     gwd_opt: 3
     imfdeepcnv: -1
     imfshalcnv: -1
+    kice: 9
     lsoil: 9
 
 FV3_RRFS_v1alpha:
