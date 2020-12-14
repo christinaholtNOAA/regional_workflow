@@ -172,7 +172,7 @@ case ${PREDEF_GRID_NAME} in
 #
 "RRFS_CONUS_3km")
 
-  GRID_GEN_METHOD= "ESGgrid"
+  GRID_GEN_METHOD="ESGgrid"
 
   ESGgrid_LON_CTR=-97.5
   ESGgrid_LAT_CTR=38.5
