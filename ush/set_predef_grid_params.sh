@@ -251,6 +251,28 @@ case ${PREDEF_GRID_NAME} in
     WRTCMP_dy="${ESGgrid_DELY}"
   fi
   ;;
+
+"RRFS_NA_3km")
+
+  GRID_GEN_METHOD="ESGgrid"
+
+  ESGgrid_LON_CTR=-107.5
+  ESGgrid_LAT_CTR=51.5
+
+  ESGgrid_DELX="3000.0"
+  ESGgrid_DELY="3000.0"
+
+  ESGgrid_NX=3640
+  ESGgrid_NY=2520
+
+  ESGgrid_WIDE_HALO_WIDTH=6
+
+  DT_ATMOS="36"
+
+  LAYOUT_X="40"
+  LAYOUT_Y="45"
+  BLOCKSIZE="28"
+
 #
 #-----------------------------------------------------------------------
 #
