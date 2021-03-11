@@ -5,6 +5,7 @@ EXPT_SUBDIR="RRFS_AK_dev1"
 
 FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 FIXgsm=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_am.20210128
+GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 
 VERBOSE="TRUE"
 
