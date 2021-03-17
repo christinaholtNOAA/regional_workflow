@@ -279,6 +279,23 @@ case ${PREDEF_GRID_NAME} in
   LAYOUT_Y="45"
   BLOCKSIZE="28"
 
+  if [ "$QUILTING" = "TRUE" ]; then
+    WRTCMP_write_groups="${WRTCMP_write_groups:-2}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
+    WRTCMP_output_grid="rotated_latlon"
+    WRTCMP_cen_lon="-112.0"
+    WRTCMP_cen_lat="48.0"
+    WRTCMP_lon_lwr_left="-51.0"
+    WRTCMP_lat_lwr_left="-33.0"
+    WRTCMP_lon_upr_rght="51.0"
+    WRTCMP_lat_upr_rght="33.0"
+    WRTCMP_dlon="0.025"
+    WRTCMP_dlat="0.025"
+  fi
+  ;;
+
 #
 #-----------------------------------------------------------------------
 #
