@@ -506,6 +506,7 @@ if [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_v0" ] || \
 
   if [ "${EXTRN_MDL_NAME_ICS}" = "NAM" ] || \
      [ "${EXTRN_MDL_NAME_ICS}" = "GSMGFS" ] || \
+     [ "${EXTRN_MDL_NAME_ICS}" = "GEFS" ] || \
      [ "${EXTRN_MDL_NAME_ICS}" = "FV3GFS" ]; then
     lsoil=4
   elif [ "${EXTRN_MDL_NAME_ICS}" = "RAP" ] || \
