@@ -219,6 +219,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
+
   <task name="&GET_EXTRN_ICS_TN;" maxtries="{{ maxtries_get_extrn_ics }}">
 
     &RSRV_HPSS;
@@ -241,6 +242,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_ics }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>ICS</value></envar>
+    <envar><name>MEMBER</name><value>{{ gefs_member }}</value></envar>
 
   </task>
 <!--
@@ -269,6 +271,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_lbcs }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>LBCS</value></envar>
+    <envar><name>MEMBER</name><value>{{ gefs_member }}</value></envar>
 
   </task>
 <!--

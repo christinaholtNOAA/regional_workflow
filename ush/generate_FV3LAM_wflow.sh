@@ -264,6 +264,7 @@ settings="\
 #
   'extrn_mdl_name_ics': ${EXTRN_MDL_NAME_ICS}
   'extrn_mdl_name_lbcs': ${EXTRN_MDL_NAME_LBCS}
+  'gefs_member': ${GEFS_MEMBER}
 #
 # Parameters that determine the set of cycles to run.
 #
