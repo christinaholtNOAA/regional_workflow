@@ -1,0 +1,48 @@
+
+NCORES_PER_NODE="36"
+PPN_RUN_FCST="18"
+LAYOUT_X="16"
+LAYOUT_Y="16"
+WRTCMP_write_groups="2"
+WRTCMP_write_tasks_per_group="90"
+
+# Copied directly from setup.sh HERA settings
+DO_ENSEMBLE="FALSE"
+NUM_ENS_MEMBERS="1"
+NDIGITS_ENSMEM_NAMES="2"
+
+# Get external model files staged on disk
+COMINgfs="/path/to/input/data"
+
+VERBOSE="TRUE"
+
+PREDEF_GRID_NAME="RRFS_NA_3km"
+NET="RRFS_NA_GFS"
+RUN="RRFS_NA_GFS"
+
+EXTRN_MDL_NAME_ICS="GFS"
+EXTRN_MDL_NAME_LBCS="GFS"
+
+RUN_ENVIR="nco"
+envir="para"
+PREEXISTING_DIR_METHOD="rename"
+
+QUILTING="TRUE"
+
+CCPP_PHYS_SUITE="FV3_GSD_SAR"
+FCST_LEN_HRS="12"
+LBC_SPEC_INTVL_HRS="3"
+
+HALO_BLEND=10
+
+WTIME_RUN_FCST="03:45:00"
+
+DATE_FIRST_CYCL="20210224"
+DATE_LAST_CYCL="20210224"
+CYCL_HRS=( "00" )
+
+# The following are specifically for AWS using Parallel Works
+FIXgsm=${FIXgsm:-"/contrib/NCEPDEV/global/glopara/fix/fix_am"}
+TOPO_DIR=${TOPO_DIR:-"/contrib/NCEPDEV/global/glopara/fix/fix_orog"}
+SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/contrib/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
+FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/contrib/NCEPDEV/global/glopara/fix/FV3LAM_pregen"}
