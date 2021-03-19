@@ -294,6 +294,7 @@ MODULES_RUN_TASK_FP script.
     <command>&LOAD_MODULES_RUN_TASK_FP; "&MAKE_ICS_TN;" "&JOBSDIR;/JREGIONAL_MAKE_ICS"</command>
     <nodes>{{ nnodes_make_ics }}:ppn={{ ppn_make_ics }}</nodes>
     <walltime>{{ wtime_make_ics }}</walltime>
+    <exclusive/>
     <nodesize>&NCORES_PER_NODE;</nodesize>
     <jobname>&MAKE_ICS_TN;{{ uscore_ensmem_name }}</jobname>
     <join><cyclestr>&LOGDIR;/&MAKE_ICS_TN;{{ uscore_ensmem_name }}_@Y@m@d@H.log</cyclestr></join>
@@ -335,6 +336,7 @@ MODULES_RUN_TASK_FP script.
     &RSRV_DEFAULT;
     <command>&LOAD_MODULES_RUN_TASK_FP; "&MAKE_LBCS_TN;" "&JOBSDIR;/JREGIONAL_MAKE_LBCS"</command>
     <nodes>{{ nnodes_make_lbcs }}:ppn={{ ppn_make_lbcs }}</nodes>
+    <exclusive/>
     <walltime>{{ wtime_make_lbcs }}</walltime>
     <nodesize>&NCORES_PER_NODE;</nodesize>
     <jobname>&MAKE_LBCS_TN;{{ uscore_ensmem_name }}</jobname>
