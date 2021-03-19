@@ -150,7 +150,11 @@ case $MACHINE in
     ;;
 
   "LINUX")
-    OMP_NUM_THREADS=$(( NCORES_PER_NODE / PPN_RUN_FCST ))
+    ulimit -s unlimited
+    export KMP_AFFINITY=scatter
+    export MKL_NUM_THREADS=1
+    export OMP_STACKSIZE=2048m
+    export OMP_NUM_THREADS=$(( NCORES_PER_NODE / PPN_RUN_FCST ))
     APRUN=$RUN_CMD_FCST
     ;;
 
