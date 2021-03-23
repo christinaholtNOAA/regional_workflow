@@ -103,6 +103,7 @@ RUN_ENVIR="nco"
 #
 MACHINE="BIG_COMPUTER"
 ACCOUNT="project_name"
+RESERVATION=""
 SCHED=""
 PARTITION_DEFAULT=""
 QUEUE_DEFAULT=""
@@ -110,6 +111,8 @@ PARTITION_HPSS=""
 QUEUE_HPSS=""
 PARTITION_FCST=""
 QUEUE_FCST=""
+PARTITION_GRAPHICS=""
+QUEUE_GRAPHICS=""
 #
 #-----------------------------------------------------------------------
 #

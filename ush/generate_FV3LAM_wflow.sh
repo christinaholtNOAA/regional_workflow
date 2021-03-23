@@ -163,6 +163,7 @@ settings="\
 # Parameters needed by the job scheduler.
 #
   'account': $ACCOUNT
+  'reservation': $RESERVATION
   'sched': $SCHED
   'partition_default': ${PARTITION_DEFAULT}
   'queue_default': ${QUEUE_DEFAULT}
@@ -170,6 +171,8 @@ settings="\
   'queue_hpss': ${QUEUE_HPSS}
   'partition_fcst': ${PARTITION_FCST}
   'queue_fcst': ${QUEUE_FCST}
+  'partition_graphics': ${PARTITION_GRAPHICS}
+  'queue_graphics': ${QUEUE_GRAPHICS}
   'machine': ${MACHINE}
 #
 # Workflow task names.
