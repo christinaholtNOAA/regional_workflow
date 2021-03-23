@@ -232,6 +232,7 @@ STMP="/base/path/of/directory/containing/model/input/and/raw/output/files"
 NET="rrfs"
 envir="para"
 RUN="experiment_name"
+TAG="dev_grid"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
 
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"

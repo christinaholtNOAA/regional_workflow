@@ -183,6 +183,7 @@ settings="\
   'make_lbcs_tn': ${MAKE_LBCS_TN}
   'run_fcst_tn': ${RUN_FCST_TN}
   'run_post_tn': ${RUN_POST_TN}
+  'tag': ${TAG}
 #
 # Number of nodes to use for each task.
 #
