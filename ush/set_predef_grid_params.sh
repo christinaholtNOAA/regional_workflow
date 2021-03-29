@@ -257,6 +257,45 @@ case ${PREDEF_GRID_NAME} in
     WRTCMP_dy="${ESGgrid_DELY}"
   fi
   ;;
+
+"RRFS_NA_3km")
+
+  GRID_GEN_METHOD="ESGgrid"
+
+  ESGgrid_LON_CTR=-107.5
+  ESGgrid_LAT_CTR=51.5
+
+  ESGgrid_DELX="3000.0"
+  ESGgrid_DELY="3000.0"
+
+  ESGgrid_NX=3640
+  ESGgrid_NY=2520
+
+  ESGgrid_WIDE_HALO_WIDTH=6
+
+  DT_ATMOS="36"
+
+  LAYOUT_X="20"
+  LAYOUT_Y="15"
+  BLOCKSIZE="30"
+
+  if [ "$QUILTING" = "TRUE" ]; then
+    WRTCMP_write_groups="${WRTCMP_write_groups:-2}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
+    WRTCMP_output_grid="rotated_latlon"
+    WRTCMP_cen_lon="-112.0"
+    WRTCMP_cen_lat="48.0"
+    WRTCMP_lon_lwr_left="-51.0"
+    WRTCMP_lat_lwr_left="-33.0"
+    WRTCMP_lon_upr_rght="51.0"
+    WRTCMP_lat_upr_rght="33.0"
+    WRTCMP_dlon="0.025"
+    WRTCMP_dlat="0.025"
+  fi
+  ;;
+
 #
 #-----------------------------------------------------------------------
 #
