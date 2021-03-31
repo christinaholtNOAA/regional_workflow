@@ -476,6 +476,42 @@ if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
   diag_table_fp="${cycle_dir}/${DIAG_TABLE_FN}"
   ln_vrfy -sf ${relative_or_null} ${diag_table_fp} ${run_dir}
 fi
+
+#
+#-----------------------------------------------------------------------
+#
+# Copy and create files for inline post
+#
+#-----------------------------------------------------------------------
+#
+
+cat > itag <<EOF
+
+ &NAMPGB
+ KPO=47,PO=1000.,975.,950.,925.,900.,875.,850.,825.,800.,775.,750.,725.,700.,675.,650.,625.,600.,575.,550.,525.,500.,475.,450.,425.,400.,375.,350.,325.,300.,275.,250.,225.,200.,175.,150.,125.,100.,70.,50.,30.,20.,10.,7.,5.,3.,2.,1.,
+   /
+EOF
+
+if [ ${USE_CUSTOM_POST_CONFIG_FILE} = "TRUE" ]; then
+  post_config_fp="${CUSTOM_POST_CONFIG_FP}"
+  print_info_msg "
+====================================================================
+Copying the user-defined post flat file specified by
+CUSTOM_POST_CONFIG_FP to the forecast run directory (fhr_dir):
+  CUSTOM_POST_CONFIG_FP = \"${CUSTOM_POST_CONFIG_FP}\"
+===================================================================="
+else
+  post_config_fp="${UFS_WTHR_MDL_DIR}/tests/parm/postxconfig-NT-fv3lam.txt"
+  print_info_msg "
+====================================================================
+Copying the default post flat file specified by post_config_fp to the
+forecast run directory (fhr_dir): post_config_fp = \"${post_config_fp}\"
+===================================================================="
+fi
+cp_vrfy ${post_config_fp} ./postxconfig-NT.txt
+cp_vrfy ${post_config_fp} ./postxconfig-NT_FH00.txt
+cp_vrfy ${UFS_WTHR_MDL_DIR}/tests/parm/params_grib2_tbl_new ./params_grib2_tbl_new
+
 #
 #-----------------------------------------------------------------------
 #

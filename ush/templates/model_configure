@@ -20,6 +20,8 @@ debug_affinity:          .true.
 restart_interval:        0
 output_1st_tstep_rst:    .false.
 print_esmf:              {{ print_esmf }}
+write_dopost:            .true.
+output_history:          .false.
 quilting:                {{ quilting }}
 
 {% if quilting  %}
