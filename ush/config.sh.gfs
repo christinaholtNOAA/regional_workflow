@@ -28,8 +28,8 @@ LMOD_PATH="/apps/lmod/lmod/init/sh"
 BUILD_ENV_FN="build_aws_intel.env"
 
 # Copied directly from setup.sh HERA settings
-DO_ENSEMBLE="FALSE"
-NUM_ENS_MEMBERS="1"
+DO_ENSEMBLE="TRUE"
+NUM_ENS_MEMBERS="3"
 NDIGITS_ENSMEM_NAMES="2"
 
 # Get external model files staged on disk
@@ -54,6 +54,7 @@ PREEXISTING_DIR_METHOD="rename"
 QUILTING="TRUE"
 
 CCPP_PHYS_SUITE="FV3_GSD_SAR"
+SUITES=( FV3_GFS_v15_thompson_mynn rrfs_gfsv16 FV3_GSD_v0 )
 FCST_LEN_HRS="3"
 LBC_SPEC_INTVL_HRS="3"
 
