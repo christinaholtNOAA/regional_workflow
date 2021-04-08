@@ -613,7 +613,7 @@ MODULES_RUN_TASK_FP script.
 
     <walltime>{{ wtime_run_fcst }}</walltime>
     <nodes>1:ppn=24</nodes>
-    <native>--exclusive &RRFS_RESERVE;</native>
+    <native>--exclusive</native>
     <jobname><cyclestr>&TAG;_python_@H_skewt</cyclestr></jobname>
     <join><cyclestr>&LOGDIR;/python_skewt.log</cyclestr></join>
 
