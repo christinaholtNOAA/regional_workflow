@@ -290,12 +290,13 @@ FV3_GFS_v15_thompson_mynn:
   fv_core_nml:
     agrid_vel_rst: True
     k_split: 2
-    n_split: 5
+    n_split: 7
     n_sponge: 9
     nord_zs_filter: !!python/none
     rf_fast: False
     stretch_fac: 0.999
   gfs_physics_nml:
+    cdmbgwd: [0.88, 0.04]
     do_tofd: False
     effr_in: True
     fhlwr: 900.
@@ -313,11 +314,13 @@ FV3_GFS_v15_thompson_mynn:
     iopt_sfc: 1
     iopt_snf: 4
     iopt_stc: 1
+    iopt_tbot: 2
     lgfdlmprad: False
     lsm: 1
     lsoil: !!python/none
     lsoil_lsm: !!python/none
     ltaerosol: False
+    nstf_name: [0, 0, 0, 0, 0]
     xkzm_h: 1.0
     xkzm_m: 1.0
     xkzminv: 0.3
@@ -499,8 +502,7 @@ rrfs_gfsv16:
     agrid_vel_rst: True
     dnats: 1
     do_sat_adj: True
-    external_eta: False
-    full_zs_filter: None
+    full_zs_filter: !!python/none
     k_split: 3
     n_split: 4
     n_sponge: 9
@@ -530,7 +532,7 @@ rrfs_gfsv16:
     mono_prof: True
     mp_time: 150.0
     prog_ccn: False
-    qi0_crt: 8e-05
+    qi0_crt: 8.0e-05
     qi_lim: 1.0
     ql_gen: 0.001
     ql_mlt: 0.001
@@ -542,7 +544,7 @@ rrfs_gfsv16:
     rh_inc: 0.3
     rh_inr: 0.3
     rh_ins: 0.3
-    rthresh: 1e-05
+    rthresh: 1.0e-05
     sedi_transport: True
     tau_g2v: 900.0
     tau_i2s: 1000.0
@@ -557,7 +559,7 @@ rrfs_gfsv16:
     z_slope_ice: True
     z_slope_liq: True
   gfs_physics_nml:
-    avg_max_length: 3600.0 + None
+    avg_max_length: 3600.0
     bl_mynn_edmf_mom: !!python/none
     bl_mynn_edmf: !!python/none
     bl_mynn_tkeadvect: !!python/none
@@ -592,8 +594,9 @@ rrfs_gfsv16:
     lgfdlmprad:  True
     lheatstrg:  True
     lsm:  1
+    lsoil_lsm: !!python/none
     ltaerosol:  False
-    nstf_name:  [2, 0, 0, 0, 0]
+    nstf_name:  [0, 0, 0, 0, 0]
     satmedmf:  True
     xkzm_h:  1.0
     xkzminv:  0.3
