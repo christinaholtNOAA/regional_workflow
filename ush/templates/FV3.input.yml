@@ -284,11 +284,13 @@ FV3_GFS_v15p2:
 
 FV3_GFS_v15_thompson_mynn:
   atmos_model_nml:
+    avg_max_length: 3600.0
     ccpp_suite: FV3_GFS_v15_thompson_mynn
   fms_nml:
     domains_stack_size: 3000000
   fv_core_nml:
     agrid_vel_rst: True
+    full_zs_filter: !!python/none
     k_split: 2
     n_split: 7
     n_sponge: 9
@@ -296,7 +298,10 @@ FV3_GFS_v15_thompson_mynn:
     rf_fast: False
     stretch_fac: 0.999
   gfs_physics_nml:
+    avg_max_length: 3600.0
     cdmbgwd: [0.88, 0.04]
+    do_ugwp: False
+    do_deep: False
     do_tofd: False
     effr_in: True
     fhlwr: 900.
@@ -315,6 +320,7 @@ FV3_GFS_v15_thompson_mynn:
     iopt_snf: 4
     iopt_stc: 1
     iopt_tbot: 2
+    ldiag_ugwp: False
     lgfdlmprad: False
     lsm: 1
     lsoil: !!python/none
@@ -592,7 +598,7 @@ rrfs_gfsv16:
     isatmedmf:  1
     ldiag_ugwp:  False
     lgfdlmprad:  True
-    lheatstrg:  True
+    lheatstrg:  False
     lsm:  1
     lsoil_lsm: !!python/none
     ltaerosol:  False
