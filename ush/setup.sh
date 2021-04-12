@@ -1245,6 +1245,7 @@ NEMS_CONFIG_TMPL_FP="${TEMPLATE_DIR}/${NEMS_CONFIG_TMPL_FN}"
 
 DIAG_TABLE_TMPL_FP=()
 FIELD_TABLE_TMPL_FP=()
+FIELD_TABLE_FP=()
 CCPP_PHYS_SUITE_FP=()
 CCPP_PHYS_SUITE_IN_CCPP_FP=()
 
@@ -1363,7 +1364,7 @@ for suite in ${SUITES[@]} ; do
   #-----------------------------------------------------------------------
   #
   DATA_TABLE_FP="${EXPTDIR}/${DATA_TABLE_FN}"
-  FIELD_TABLE_FP="${EXPTDIR}/${FIELD_TABLE_FN}"
+  FIELD_TABLE_FP+=("${EXPTDIR}/${FIELD_TABLE_TMPL_FN}")
 done
 
 FV3_NML_FN="${FV3_NML_BASE_SUITE_FN%.*}"
@@ -2477,7 +2478,7 @@ CCPP_PHYS_SUITE_IN_CCPP_FP=( $( printf "\"%s\" " "${CCPP_PHYS_SUITE_IN_CCPP_FP[@
 CCPP_PHYS_SUITE_FP=( $( printf "\"%s\" " "${CCPP_PHYS_SUITE_FP[@]}" ))
 
 DATA_TABLE_FP="${DATA_TABLE_FP}"
-FIELD_TABLE_FP="${FIELD_TABLE_FP}"
+FIELD_TABLE_FP=( $( printf "\"%s\" " "${FIELD_TABLE_FP[@]}" ))
 FV3_NML_FN="${FV3_NML_FN}"   # This may not be necessary...
 FV3_NML_FP="${FV3_NML_FP}"
 NEMS_CONFIG_FP="${NEMS_CONFIG_FP}"

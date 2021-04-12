@@ -419,7 +419,7 @@ if [ "${RUN_ENVIR}" != "nco" ] && [ "${MACHINE}" != "WCOSS_CRAY" ] ; then
 fi
 
 ln_vrfy -sf ${relative_or_null} ${DATA_TABLE_FP} ${run_dir}
-ln_vrfy -sf ${relative_or_null} ${FIELD_TABLE_FP} ${run_dir}
+ln_vrfy -sf ${relative_or_null} "${FIELD_TABLE_FP[$(( 10#${ensmem_indx}-1 ))]}" ${run_dir}/${FIELD_TABLE_FN}
 ln_vrfy -sf ${relative_or_null} ${NEMS_CONFIG_FP} ${run_dir}
 
 if [ "${DO_ENSEMBLE}" = TRUE ]; then
@@ -521,7 +521,6 @@ cp_vrfy ${UFS_WTHR_MDL_DIR}/tests/parm/params_grib2_tbl_new ./params_grib2_tbl_n
 #
 export KMP_AFFINITY=scatter
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1} #Needs to be 1 for dynamic build of CCPP with GFDL fast physics, was 2 before.
-export OMP_STACKSIZE=1024m
 
 #
 #-----------------------------------------------------------------------
