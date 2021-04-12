@@ -12,8 +12,8 @@ RUN_CMD_POST="srun --mpi=pmi2"
 
 NCORES_PER_NODE="36"
 PPN_RUN_FCST="18"
-LAYOUT_X="36"
-LAYOUT_Y="18"
+LAYOUT_X="18"
+LAYOUT_Y="36"
 WRTCMP_write_groups="1"
 WRTCMP_write_tasks_per_group="72"
 
