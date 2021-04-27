@@ -76,23 +76,28 @@ fi
 # Choose an appropriate sites file for the grid
 if [[ ${PREDEF_GRID_NAME} =~ CONUS ]] ; then
   sites_file=conus_raobs.txt
+  tiles=${TILES:-all}
 elif [[ ${PREDEF_GRID_NAME} =~ AK ]] ; then
   sites_file=alaska_raobs.txt
+  tiles=${TILES:-full}
+elif [[ ${PREDEF_GRID_NAME} =~ RAP ]] ; then
+  sites_file=conus_raobs.txt
+  tiles=${TILES:-full}
 else
   print_err_msg_exit "\
   Choice of sites file is ambiguous. Please help."
 fi
 
 # Choose the appropriate file template for graphics type
-
-case ${GRAPHICS_TYPE} in 
+case ${GRAPHICS_TYPE} in
 
   "maps")
 
-    file_tmpl="${NET}.${CDATE:8:2}z.bgdawpf{FCST_TIME:03d}.tm${CDATE:8:2}.grib2"
+    file_tmpl="${NET}.t${CDATE:8:2}z.bgdawpf{FCST_TIME:03d}.tm00.grib2"
     file_type=prs
     extra_args="\
-      --tiles all
+      --all_leads \
+      --tiles $tiles \
       --images ${PYTHON_GRAPHICS_DIR}/image_lists/rrfs_subset.yml hourly"
     ;;
 
@@ -101,9 +106,8 @@ case ${GRAPHICS_TYPE} in
     file_tmpl="${NET}.t${CDATE:8:2}z.bgrd3df{FCST_TIME:03d}.tm00.grib2"
     file_type=nat
     extra_args="\
-      --sites ${PYTHON_GRAPHICS_DIR}/static/${sites_file}\
+      --sites ${PYTHON_GRAPHICS_DIR}/static/${sites_file} \
       --max_plev 100"
-    zip_dir=${zip_dir}/skewt
     ;;
 
   *)
@@ -126,6 +130,7 @@ python -u ${PYTHON_GRAPHICS_DIR}/create_graphics.py \
   -f 0 ${FCST_LEN_HRS} \
   --file_tmpl ${file_tmpl} \
   --file_type ${file_type} \
+  -m "${MODEL}" \
   -n ${SLURM_CPUS_ON_NODE:-12} \
   -o ${run_dir} \
   -s ${CDATE} \
