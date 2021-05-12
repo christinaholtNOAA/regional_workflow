@@ -230,6 +230,7 @@ settings="\
   'ppn_run_fcst': ${PPN_RUN_FCST}
   'ppn_run_anal': ${PPN_RUN_ANAL}
   'ppn_run_post': ${PPN_RUN_POST}
+  'ppn_run_python': ${PPN_RUN_GRAPHICS}
 #
 # Maximum wallclock time for each task.
 #
@@ -330,6 +331,13 @@ settings="\
 #
   'do_dacycle': ${DO_DACYCLE}
   'da_cycle_interval_hrs': ${DA_CYCLE_INTERV}
+
+#
+# graphics related parameters
+#
+  'tilelabels': ${TILE_LABELS}
+  'tilesets': ${TILE_SETS}
+
 #
 #  retrospective experiments
 #

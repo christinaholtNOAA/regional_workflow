@@ -1428,6 +1428,7 @@ NNODES_RUN_PREPSTART="1"
 NNODES_RUN_FCST=""  # This is calculated in the workflow generation scripts, so no need to set here.
 NNODES_RUN_POST="2"
 NNODES_RUN_ANAL="16"
+NNODES_RUN_GRAPHICS="1"
 #
 # Number of cores.
 #
@@ -1446,6 +1447,7 @@ PPN_RUN_PREPSTART="1"
 PPN_RUN_FCST="24"  # This may have to be changed depending on the number of threads used.
 PPN_RUN_POST="24"
 PPN_RUN_ANAL="24"
+PPN_RUN_GRAPHICS="24"
 #
 # Walltimes.
 #
@@ -1498,6 +1500,32 @@ MAXTRIES_RUN_ANAL="1"
 #
 USE_CUSTOM_POST_CONFIG_FILE="FALSE"
 CUSTOM_POST_CONFIG_FP=""
+#
+#-----------------------------------------------------------------------
+#
+# Set the tiles (or subdomains) for creating graphics in a Rocoto metatask.
+#
+# TILE_LABELS
+# A space separated list (string is fine, no need for array) of the labels
+# applied to the groupings of tiles to be run as a single batch jobs. For
+# example, you may label the set of tiles SE,NE,SC,NC,SW,NW as "regions", and
+# the full input domain as "full" if you wanted those to run in two domains. The
+# length must match the length of TILE_SETS.
+#
+# TILE_SETS
+# A space separated list of tile groupings to plot. Space-separated sets
+# indicate which ones will be grouped in a single batch job, comma sepated items
+# are the tiles to be plotted in that batch job. For example:
+#    TILE_SETS="full SW,SC,SE NW,NC,NE"
+#    TILE_LABELS="full southern_regions northern_regions"
+# would plot maps for the full domain in a batch job separately from the
+# southern regions, using a third batch job for the northern regions. The
+# space-separated list must match the length of TILE_LABELS.
+#
+#-----------------------------------------------------------------------
+#
+TILE_LABELS="full"
+TILE_SETS="full"
 #
 #-----------------------------------------------------------------------
 #

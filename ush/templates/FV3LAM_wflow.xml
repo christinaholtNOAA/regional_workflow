@@ -104,7 +104,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 {%- else %}
 <!ENTITY RSRV_ANALYSIS    "<account>&ACCOUNT;</account><queue>&QUEUE_ANALYSIS;</queue>">
 {%- endif %}
-<!ENTITY RSRV_GRAPHICS   "<account>&SERVICE_ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
+<!ENTITY RSRV_GRAPHICS   "<account>&SERVICE_ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition><native>--exclusive</native>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
 <!ENTITY DEADLINE_ANAL     "16:00:00">
@@ -682,19 +682,19 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 -->
 
-  <metatask name="python_graphics">
+  <metatask name="python_maps">
 
-    <var name="graphics_type"> maps skewts </var>
-    <task name="python_#graphics_type#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+    <var name="tilelabel"> {{ tilelabels }} </var>
+    <var name="tileset"> {{ tilesets }} </var>
+    <task name="python_maps_#tilelabel#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
 
       &RSRV_GRAPHICS;
       &WALL_LIMIT_GRAPHICS;
 
       <walltime>{{ wtime_run_fcst }}</walltime>
-      <nodes>1:ppn=24</nodes>
-      <native>--exclusive</native>
-      <jobname><cyclestr>&TAG;_python_@H_#graphics_type#</cyclestr></jobname>
-      <join><cyclestr>&LOGDIR;/python_#graphics_type#.log</cyclestr></join>
+      <nodes>{{ nnodes_run_graphics }}:ppn={{ ppn_run_graphics }}</nodes>
+      <jobname><cyclestr>&TAG;_python_@H_#tilelabel#</cyclestr></jobname>
+      <join><cyclestr>&LOGDIR;/python_#tilelabel#.log</cyclestr></join>
       <command>&LOAD_MODULES_RUN_TASK_FP; "run_graphics" "&JOBSDIR;/JREGIONAL_RUN_PYTHON_GRAPHICS"</command>
 
       <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
@@ -702,13 +702,37 @@ MODULES_RUN_TASK_FP script.
       <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
       <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
-      <envar><name>GRAPHICS_TYPE</name><value>#graphics_type#</value></envar>
+      <envar><name>GRAPHICS_TYPE</name><value>maps</value></envar>
+      <envar><name>TILES</name><value>#tileset#</value></envar>
 
       <dependency>
         <taskdep task="&RUN_POST_TN;_f000"/>
       </dependency>
     </task>
   </metatask>
+
+  <task name="python_skewts" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+    &RSRV_GRAPHICS;
+    &WALL_LIMIT_GRAPHICS;
+
+    <walltime>{{ wtime_run_fcst }}</walltime>
+    <nodes>{{ nnodes_run_graphics }}:ppn={{ ppn_run_graphics }}</nodes>
+    <jobname><cyclestr>&TAG;_python_@H_skewts</cyclestr></jobname>
+    <join><cyclestr>&LOGDIR;/python_skewts_@H.log</cyclestr></join>
+    <command>&LOAD_MODULES_RUN_TASK_FP; "run_graphics" "&JOBSDIR;/JREGIONAL_RUN_PYTHON_GRAPHICS"</command>
+
+    <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
+    <envar><name>GRAPHICS_TYPE</name><value>skewts</value></envar>
+
+    <dependency>
+      <taskdep task="&RUN_POST_TN;_f000"/>
+    </dependency>
+  </task>
 
 <!--
 ************************************************************************

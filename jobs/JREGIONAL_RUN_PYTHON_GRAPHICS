@@ -62,13 +62,18 @@ on the output files corresponding to a specified forecast hour.
 #-----------------------------------------------------------------------
 #
 
+if [ "${GRID_CODE}" != "NONE" ] ; then
+  subdir=${GRID_CODE}
+fi
+
+
 if [ "${RUN_ENVIR}" = "nco" ]; then
   COMOUT="${COMOUT_BASEDIR}/$RUN.$PDY/$cyc${SLASH_ENSMEM_SUBDIR}"
-  postprd_dir="$COMOUT"
+  postprd_dir="${COMOUT}/${subdir:-}"
   run_dir="${COMOUT}/pyprd"
   zip_dir="${COMOUT}/nclprd"
 else
-  postprd_dir="${run_dir}/postprd"
+  postprd_dir="${run_dir}/postprd/${subdir:-}"
   run_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/pyprd"
   zip_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/nclprd"
 fi
@@ -76,12 +81,12 @@ fi
 # Choose an appropriate sites file for the grid
 if [[ ${PREDEF_GRID_NAME} =~ CONUS ]] ; then
   sites_file=conus_raobs.txt
-  tiles=${TILES:-all}
+  tiles=${TILES:-full}
 elif [[ ${PREDEF_GRID_NAME} =~ AK ]] ; then
   sites_file=alaska_raobs.txt
   tiles=${TILES:-full}
-elif [[ ${PREDEF_GRID_NAME} =~ RAP ]] ; then
-  sites_file=conus_raobs.txt
+elif [[ ${PREDEF_GRID_NAME} =~ RAP | ${PREDEF_GRID_NAME} =~ NA ]] ; then
+  sites_file=na_raobs.txt
   tiles=${TILES:-full}
 else
   print_err_msg_exit "\
