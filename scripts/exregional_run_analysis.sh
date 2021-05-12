@@ -321,14 +321,18 @@ sed -i "s/hh/${HH}/"     coupler.res
 # copy observation files to working directory 
 #
 #-----------------------------------------------------------------------
+obs_source=rap
+if [[ ${HH} -eq '00' || ${HH} -eq '12' ]]; then
+  obs_source=rap_e
+fi
 
-obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
+obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.prepbufr.tm00
 obs_files_target[0]=prepbufr
 
-obs_files_source[1]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.satwnd.tm00.bufr_d
+obs_files_source[1]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.satwnd.tm00.bufr_d
 obs_files_target[1]=satwndbufr
 
-obs_files_source[2]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.nexrad.tm00.bufr_d
+obs_files_source[2]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.nexrad.tm00.bufr_d
 obs_files_target[2]=l2rwbufr
 
 obs_number=${#obs_files_source[@]}
@@ -475,16 +479,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-GSI_EXEC="${EXECDIR}/gsi.x"
+gsi_exec="${EXECDIR}/gsi.x"
 
-if [ -f $GSI_EXEC ]; then
+if [ -f $gsi_exec ]; then
   print_info_msg "$VERBOSE" "
 Copying the GSI executable to the run directory..."
-  cp_vrfy ${GSI_EXEC} ${analworkdir}/gsi.x
+  cp_vrfy ${gsi_exec} ${analworkdir}/gsi.x
 else
   print_err_msg_exit "\
 The GSI executable specified in GSI_EXEC does not exist:
-  GSI_EXEC = \"$GSI_EXEC\"
+  GSI_EXEC = \"$gsi_exec\"
 Build GSI and rerun."
 fi
 #
@@ -564,16 +568,16 @@ fi
 if [ $netcdf_diag = ".true." ]; then
    listallnc="conv_ps conv_q conv_t conv_uv"
 
-   CAT_EXEC="${EXECDIR}/ncdiag_cat.x"
+   cat_exec="${EXECDIR}/ncdiag_cat.x"
 
-   if [ -f $CAT_EXEC ]; then
+   if [ -f $cat_exec ]; then
       print_info_msg "$VERBOSE" "
         Copying the ncdiag_cat executable to the run directory..."
-      cp_vrfy ${CAT_EXEC} ${analworkdir}/ncdiag_cat.x
+      cp_vrfy ${cat_exec} ${analworkdir}/ncdiag_cat.x
    else
       print_err_msg_exit "\
-        The ncdiag_cat executable specified in CAT_EXEC does not exist:
-        CAT_EXEC = \"$CAT_EXEC\"
+        The ncdiag_cat executable specified in cat_exec does not exist:
+        cat_exec = \"$cat_exec\"
         Build GSI and rerun."
    fi
 

@@ -276,7 +276,10 @@ bgsfc=${postprd_dir}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
 mv_vrfy BGDAWP.GrbF${post_fhr} ${bgdawp}
 mv_vrfy BGRD3D.GrbF${post_fhr} ${bgrd3d}
 # small subset of surface fields for testbed and internal use
-wgrib2 -match "APCP|parmcat=16 parm=196|PRATE" ${bgrd3d} -grib ${bgsfc}
+#wgrib2 -match "APCP|parmcat=16 parm=196|PRATE" ${bgrd3d} -grib ${bgsfc}
+
+# extract the output fields for the testbed
+wgrib2 ${bgdawp} | grep -F -f ${FIXam}/testbed_fields_bgdawp.txt | wgrib2 -i -grib ${bgsfc} ${bgdawp}
 
 #Link output for transfer to Jet
 # Should the following be done only if on jet??
@@ -293,40 +296,54 @@ ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 $
 ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 ${comout}/BGRD3D_${basetime}${post_fhr}00
 ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2  ${comout}/BGSFC_${basetime}${post_fhr}00
 
-# Remap North America output grids for 130-CONUS and 242-AK
-if [ ${NET} = "RRFS_NA_13km" ]; then
+# Remap to additional output grids if requested
+if [ ${#ADDNL_OUTPUT_GRIDS[@]} -gt 0 ]; then
 
   cd_vrfy ${comout}
 
   grid_specs_130="lambert:265:25.000000 233.862000:451:13545.000000 16.281000:337:13545.000000"
+  grid_specs_200="lambert:253:50.000000 285.720000:108:16232.000000 16.201000:94:16232.000000"
+  grid_specs_221="lambert:253:50.000000 214.500000:349:32463.000000 1.000000:277:32463.000000"
   grid_specs_242="nps:225:60.000000 187.000000:553:11250.000000 30.000000:425:11250.000000"
+  grid_specs_243="latlon 190.0:126:0.400 10.000:101:0.400"
+  grid_specs_clue="lambert:262.5:38.5 239.891:1620:3000.0 20.971:1120:3000.0"
+  grid_specs_hrrr="lambert:-97.5:38.5 -122.7195:1799:3000.0 21.13812:1059:3000.0"
+  grid_specs_hrrre="lambert:-97.5:38.5 -122.71953:1800:3000.0 21.138123:1060:3000.0"
+  grid_specs_rrfsak="lambert:-161.5:63.0 172.102615:1379:3000.0 45.84576:1003:3000.0"
 
-  for grid in 130 242
+  for grid in ${ADDNL_OUTPUT_GRIDS[@]}
   do
     for leveltype in dawp rd3d sfc 
     do
       
       eval grid_specs=\$grid_specs_${grid}
       subdir=${postprd_dir}/${grid}_grid
-      mkdir -p ${subdir}
+      mkdir -p ${subdir}/${fhr}
       bg_remap=${subdir}/${NET}.t${cyc}z.bg${leveltype}f${fhr}.${tmmark}.grib2
 
       # Interpolate fields to new grid
       eval infile=\$bg${leveltype}
-      wgrib2 ${infile} -set_bitmap 1 -set_grib_type c3 -new_grid_winds grid \
-        -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" \
-        -new_grid_interpolation bilinear \
-        -if ":(WEASD|APCP|NCPCP|ACPCP|SNOD):" -new_grid_interpolation budget -fi \
-        -if ":(NCONCD|NCCICE|SPNCR|CLWMR|CICE|RWMR|SNMR|GRLE|PMTF|PMTC|REFC|CSNOW|CICEP|CFRZR|CRAIN|LAND|ICEC|TMP:surface|VEG|CCOND|SFEXC|MSLMA|PRES:tropopause|LAI|HPBL|HGT:planetary boundary layer):" -new_grid_interpolation neighbor -fi \
-        -new_grid ${grid_specs} ${subdir}/tmp_${grid}.grib2 &
+      if [ ${NET} = "RRFS_NA_13km" ]; then
+         wgrib2 ${infile} -set_bitmap 1 -set_grib_type c3 -new_grid_winds grid \
+           -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" \
+           -new_grid_interpolation bilinear \
+           -if ":(WEASD|APCP|NCPCP|ACPCP|SNOD):" -new_grid_interpolation budget -fi \
+           -if ":(NCONCD|NCCICE|SPNCR|CLWMR|CICE|RWMR|SNMR|GRLE|PMTF|PMTC|REFC|CSNOW|CICEP|CFRZR|CRAIN|LAND|ICEC|TMP:surface|VEG|CCOND|SFEXC|MSLMA|PRES:tropopause|LAI|HPBL|HGT:planetary boundary layer):" -new_grid_interpolation neighbor -fi \
+           -new_grid ${grid_specs} ${subdir}/${fhr}/tmp_${grid}.grib2 &
+      else
+         wgrib2 ${infile} -set_bitmap 1 -set_grib_type c3 -new_grid_winds grid \
+           -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" \
+           -new_grid_interpolation neighbor \
+           -new_grid ${grid_specs} ${subdir}/${fhr}/tmp_${grid}.grib2 &
+      fi
       wait 
 
       # Merge vector field records
-      wgrib2 ${subdir}/tmp_${grid}.grib2 -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" -submsg_uv ${bg_remap} &
+      wgrib2 ${subdir}/${fhr}/tmp_${grid}.grib2 -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" -submsg_uv ${bg_remap} &
       wait 
 
       # Remove temporary files
-      rm -f ${subdir}/tmp_${grid}.grib2
+      rm -f ${subdir}/${fhr}/tmp_${grid}.grib2
 
       # Link output for transfer from Jet to web
       ln -fs ${bg_remap} ${subdir}/BG${leveltype^^}_${basetime}${post_fhr}00

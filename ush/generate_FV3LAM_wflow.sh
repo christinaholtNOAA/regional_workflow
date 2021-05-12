@@ -193,6 +193,11 @@ settings="\
   'anal_gsi': ${ANAL_GSI_TN}
   'prep_coldstart': ${PREP_COLDSTART_TN}
   'prep_warmstart': ${PREP_WARMSTART_TN}
+  'process_radarref': ${PROCESS_RADAR_REF_TN}
+  'process_lightning': ${PROCESS_LIGHTNING_TN}
+  'process_bufr': ${PROCESS_BUFR_TN}
+  'radar_refl2tten': ${RADAR_REFL2TTEN_TN}
+  'cldanl_nonvar': ${CLDANL_NONVAR_TN}
   'tag': ${TAG}
 #
 # Number of nodes to use for each task.
@@ -208,6 +213,11 @@ settings="\
   'nnodes_run_fcst': ${NNODES_RUN_FCST}
   'nnodes_run_anal': ${NNODES_RUN_ANAL}
   'nnodes_run_post': ${NNODES_RUN_POST}
+  'nnodes_proc_radar': ${NNODES_PROC_RADAR}
+  'nnodes_proc_lightning': ${NNODES_PROC_LIGHTNING}
+  'nnodes_proc_bufr': ${NNODES_PROC_BUFR}
+  'nnodes_run_ref2tten': ${NNODES_RUN_REF2TTEN}
+  'nnodes_run_nonvarcldanl': ${NNODES_RUN_NONVARCLDANL}
 #
 # Number of cores used for a task
 #
@@ -230,6 +240,11 @@ settings="\
   'ppn_run_fcst': ${PPN_RUN_FCST}
   'ppn_run_anal': ${PPN_RUN_ANAL}
   'ppn_run_post': ${PPN_RUN_POST}
+  'ppn_proc_radar': ${PPN_PROC_RADAR}
+  'ppn_proc_lightning': ${PPN_PROC_LIGHTNING}
+  'ppn_proc_bufr': ${PPN_PROC_BUFR}
+  'ppn_run_ref2tten': ${PPN_RUN_REF2TTEN}
+  'ppn_run_nonvarcldanl': ${PPN_RUN_NONVARCLDANL}
   'ppn_run_python': ${PPN_RUN_GRAPHICS}
 #
 # Maximum wallclock time for each task.
@@ -245,6 +260,16 @@ settings="\
   'wtime_run_fcst': ${WTIME_RUN_FCST}
   'wtime_run_anal': ${WTIME_RUN_ANAL}
   'wtime_run_post': ${WTIME_RUN_POST}
+  'wtime_proc_radar': ${WTIME_PROC_RADAR}
+  'wtime_proc_lightning': ${WTIME_PROC_LIGHTNING}
+  'wtime_proc_bufr': ${WTIME_PROC_BUFR}
+  'wtime_run_ref2tten': ${WTIME_RUN_REF2TTEN}
+  'wtime_run_nonvarcldanl': ${WTIME_RUN_NONVARCLDANL}
+#
+# Maximum memory for each task.
+#
+  'memo_run_ref2tten': ${MEMO_RUN_REF2TTEN}
+  'memo_run_nonvarcldanl': ${MEMO_RUN_NONVARCLDANL}
 #
 # Maximum number of tries for each task.
 #
@@ -259,6 +284,11 @@ settings="\
   'maxtries_run_fcst': ${MAXTRIES_RUN_FCST}
   'maxtries_anal_gsi': ${MAXTRIES_ANAL_GSI}
   'maxtries_run_post': ${MAXTRIES_RUN_POST}
+  'maxtries_process_radarref': ${MAXTRIES_PROCESS_RADARREF}
+  'maxtries_process_lightning': ${MAXTRIES_PROCESS_LIGHTNING}
+  'maxtries_process_bufr': ${MAXTRIES_PROCESS_BUFR}
+  'maxtries_radar_ref2tten': ${MAXTRIES_RADAR_REF2TTEN}
+  'maxtries_cldanl_nonvar': ${MAXTRIES_CLDANL_NONVAR}
 #
 # Flags that specify whether to run the preprocessing tasks.
 #
@@ -310,13 +340,17 @@ settings="\
   'prep_warmstart_cycledef': ${PREP_WARMSTART_CYCLEDEF}
   'analysis_cycledef': ${ANALYSIS_CYCLEDEF}
   'forecast_cycledef': ${FORECAST_CYCLEDEF}
+  'postproc_cycledef': ${POSTPROC_CYCLEDEF}
+  'postproc_long_cycledef': ${POSTPROC_LONG_CYCLEDEF}
   'archive_cycledef': ${ARCHIVE_CYCLEDEF}
 #
-# Forecast length (same for all cycles).
+# boundary, forecast, and post process length.
 #
   'fcst_len_hrs': ${FCST_LEN_HRS}
   'boundary_len_hrs': ${BOUNDARY_LEN_HRS}
   'boundary_long_len_hrs': ${BOUNDARY_LONG_LEN_HRS}
+  'postproc_len_hrs': ${POSTPROC_LEN_HRS}
+  'postproc_long_len_hrs': ${POSTPROC_LONG_LEN_HRS}
 #
 # Ensemble-related parameters.
 #
@@ -331,13 +365,13 @@ settings="\
 #
   'do_dacycle': ${DO_DACYCLE}
   'da_cycle_interval_hrs': ${DA_CYCLE_INTERV}
-
+  'do_nonvar_cldanal': ${DO_NONVAR_CLDANAL}
+  'do_refl2tten': ${DO_REFL2TTEN}
 #
 # graphics related parameters
 #
   'tilelabels': ${TILE_LABELS}
   'tilesets': ${TILE_SETS}
-
 #
 #  retrospective experiments
 #
@@ -961,6 +995,7 @@ fi
 #
 set -u
 #set -x
+[[ ! -f config.sh ]] && echo "config.sh not found!" && exit 1
 #
 #-----------------------------------------------------------------------
 #
