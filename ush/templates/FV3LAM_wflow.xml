@@ -886,6 +886,7 @@ MODULES_RUN_TASK_FP script.
       <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
       <envar><name>GRAPHICS_TYPE</name><value>maps</value></envar>
       <envar><name>TILES</name><value>#tileset#</value></envar>
+      <envar><name>TILELABEL</name><value>#tilelabel#</value></envar>
 
       <dependency>
         <taskdep task="&RUN_POST_TN;_f000"/>

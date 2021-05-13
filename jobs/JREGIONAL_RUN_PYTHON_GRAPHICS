@@ -62,32 +62,42 @@ on the output files corresponding to a specified forecast hour.
 #-----------------------------------------------------------------------
 #
 
-if [ "${GRID_CODE}" != "NONE" ] ; then
-  subdir=${GRID_CODE}
-fi
-
 
 if [ "${RUN_ENVIR}" = "nco" ]; then
   COMOUT="${COMOUT_BASEDIR}/$RUN.$PDY/$cyc${SLASH_ENSMEM_SUBDIR}"
-  postprd_dir="${COMOUT}/${subdir:-}"
+  postprd_dir="${COMOUT}"
   run_dir="${COMOUT}/pyprd"
   zip_dir="${COMOUT}/nclprd"
 else
-  postprd_dir="${run_dir}/postprd/${subdir:-}"
+  postprd_dir="${run_dir}/postprd"
   run_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/pyprd"
   zip_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/nclprd"
 fi
 
+# Use a subdirectory for input from alternative wgrib2-produced grids.
+if [ "${TILES}" == "full" ] ; then
+  subdir=${postprd_dir}/${TILELABEL}_grid
+  if [ -d ${subdir} ] ; then
+    postprd_dir=${subdir}
+  fi
+fi
+
+
 # Choose an appropriate sites file for the grid
-if [[ ${PREDEF_GRID_NAME} =~ CONUS ]] ; then
-  sites_file=conus_raobs.txt
-  tiles=${TILES:-full}
-elif [[ ${PREDEF_GRID_NAME} =~ AK ]] ; then
+sites_file=conus_raobs.txt
+tiles=${TILES:-full}
+
+if [[ ${PREDEF_GRID_NAME} =~ AK || \
+      ${TILELABEL} == "242" ]] ; then
   sites_file=alaska_raobs.txt
   tiles=${TILES:-full}
-elif [[ ${PREDEF_GRID_NAME} =~ RAP | ${PREDEF_GRID_NAME} =~ NA ]] ; then
+
+elif [[ ${PREDEF_GRID_NAME} =~ RAP || \
+        ${PREDEF_GRID_NAME} =~ NA || \
+        ${TILELABEL} == "221"]] ; then
   sites_file=na_raobs.txt
   tiles=${TILES:-full}
+
 else
   print_err_msg_exit "\
   Choice of sites file is ambiguous. Please help."
