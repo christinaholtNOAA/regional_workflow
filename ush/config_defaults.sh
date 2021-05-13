@@ -1571,6 +1571,8 @@ CUSTOM_POST_CONFIG_FP=""
 #-----------------------------------------------------------------------
 #
 # Set the tiles (or subdomains) for creating graphics in a Rocoto metatask.
+# Do not include references to the grids that are produced in separate grib
+# files (set with ADDNL_OUTPUT_GRIDS above). Those will be added in setup.sh
 #
 # TILE_LABELS
 # A space separated list (string is fine, no need for array) of the labels
