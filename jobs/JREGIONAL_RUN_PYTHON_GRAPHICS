@@ -75,10 +75,12 @@ else
 fi
 
 # Use a subdirectory for input from alternative wgrib2-produced grids.
-if [ "${TILES}" == "full" ] ; then
-  subdir=${postprd_dir}/${TILELABEL}_grid
+if [ "${TILES:-}" = "full" ] ; then
+  subdir=${postprd_dir}/${TILELABEL:-}_grid
   if [ -d ${subdir} ] ; then
     postprd_dir=${subdir}
+    run_dir=${run_dir}/${TILELABEL:-}_grid
+    zip_dir=${zip_dir}/${TILELABEL:-}_grid
   fi
 fi
 
@@ -87,20 +89,17 @@ fi
 sites_file=conus_raobs.txt
 tiles=${TILES:-full}
 
-if [[ ${PREDEF_GRID_NAME} =~ AK || \
-      ${TILELABEL} == "242" ]] ; then
+if [[ "${PREDEF_GRID_NAME}" =~ "AK" || \
+      "${TILELABEL:-}" == "242" ]] ; then
   sites_file=alaska_raobs.txt
   tiles=${TILES:-full}
 
-elif [[ ${PREDEF_GRID_NAME} =~ RAP || \
-        ${PREDEF_GRID_NAME} =~ NA || \
-        ${TILELABEL} == "221"]] ; then
+elif [[ "${PREDEF_GRID_NAME}" =~ "RAP" || \
+        "${PREDEF_GRID_NAME}" =~ "NA" || \
+        "${TILELABEL:-}" = "221" ]] ; then
   sites_file=na_raobs.txt
   tiles=${TILES:-full}
 
-else
-  print_err_msg_exit "\
-  Choice of sites file is ambiguous. Please help."
 fi
 
 # Choose the appropriate file template for graphics type
