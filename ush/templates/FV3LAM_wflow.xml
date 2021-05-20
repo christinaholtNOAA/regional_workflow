@@ -978,7 +978,6 @@ MODULES_RUN_TASK_FP script.
 
   </task>
 
-{%- endif %}
 {%- if machine in ["JET", "HERA"]  %}
 <!--
 ************************************************************************
@@ -999,6 +998,7 @@ MODULES_RUN_TASK_FP script.
 
   </task>
 
+{%- endif %}
 {%- endif %}
 
 </workflow>

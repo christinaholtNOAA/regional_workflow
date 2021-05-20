@@ -847,7 +847,7 @@ if [ "${DO_DACYCLE}" = "true" ]; then
      'nggps_ic'   : false,
      'mountain'  : true,
      'warm_start' : true,
-   }"
+  }"
  
  $USHDIR/set_namelist.py -q \
                          -n ${FV3_NML_FP} \
