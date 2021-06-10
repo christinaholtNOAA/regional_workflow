@@ -1373,6 +1373,7 @@ SPPT_MAG="0.7" #Variable "sppt" in input.nml
 SPPT_LSCALE="150000"
 SPPT_TSCALE="21600" #Variable "sppt_tau" in input.nml
 SPPT_INT="3600" #Variable "spptint" in input.nml
+SPPT_SFCLIMIT="true"
 SKEB_MAG="0.5" #Variable "skeb" in input.nml
 SKEB_LSCALE="150000"
 SKEB_TSCALE="21600" #Variable "skeb_tau" in input.nml

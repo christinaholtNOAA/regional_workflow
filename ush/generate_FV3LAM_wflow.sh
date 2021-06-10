@@ -216,11 +216,6 @@ settings="\
   'ppn_make_lbcs': ${PPN_MAKE_LBCS}
   'ppn_run_fcst': ${PPN_RUN_FCST}
   'ppn_run_post': ${PPN_RUN_POST}
-  'ppn_get_obs_ccpa': ${PPN_GET_OBS_CCPA}
-  'ppn_get_obs_mrms': ${PPN_GET_OBS_MRMS}
-  'ppn_get_obs_ndas': ${PPN_GET_OBS_NDAS}
-  'ppn_vx_gridstat': ${PPN_VX_GRIDSTAT}
-  'ppn_vx_pointstat': ${PPN_VX_POINTSTAT}
 #
 # Maximum wallclock time for each task.
 #
@@ -578,6 +573,7 @@ for (( suite=0; suite<${#SUITES[@]}; suite++ )); do
       'sppt': ${SPPT_MAG},
       'sppt_lscale': ${SPPT_LSCALE},
       'sppt_tau': ${SPPT_TSCALE},
+      'sppt_sfclimit': ${SPPT_SFCLIMIT},
       'spptint': ${SPPT_INT},
       'skeb': ${SKEB_MAG},
       'skeb_lscale': ${SKEB_LSCALE},
@@ -706,8 +702,6 @@ done # Namelist generation loop over physics suites
   set_FV3nml_sfc_climo_filenames || print_err_msg_exit "\
 Call to function to set surface climatology file names in the FV3 namelist
 file failed."
-
-fi
 
 #
 #-----------------------------------------------------------------------
