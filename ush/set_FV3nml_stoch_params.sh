@@ -54,6 +54,7 @@ function set_FV3nml_stoch_params() {
 #
   local valid_args=( \
     "cdate" \
+    "run_dir" \
   )
   process_args valid_args "$@"
 #
@@ -92,7 +93,7 @@ ensmem_name="mem${ENSMEM_INDX}"
 
 fv3_nml_ensmem_fp="${CYCLE_BASEDIR}/${cdate}/${ensmem_name}/${FV3_NML_FN}"
 
-ensmem_num=$((10#${ENSMEM_INDX}))
+ensmem_num=$((10#${ENSMEM_INDX} - 1))
 
 iseed_shum=$(( cdate*1000 + ensmem_num*10 + 2 ))
 iseed_skeb=$(( cdate*1000 + ensmem_num*10 + 3 ))
@@ -110,9 +111,9 @@ settings="\
   }"
 
 $USHDIR/set_namelist.py -q \
-                        -n ${FV3_NML_FP} \
+                        -n ${FV3_NML_ENSMEM_FPS[${ensmem_num}]} \
                         -u "$settings" \
-                        -o ${fv3_nml_ensmem_fp} || \
+                        -o ${run_dir}/${FV3_NML_FN} || \
   print_err_msg_exit "\
 Call to python script set_namelist.py to set the variables in the FV3
 namelist file that specify the paths to the surface climatology files

@@ -424,7 +424,7 @@ ln_vrfy -sf ${relative_or_null} "${FIELD_TABLE_FP[$(( 10#${ensmem_indx}-1 ))]}" 
 ln_vrfy -sf ${relative_or_null} ${NEMS_CONFIG_FP} ${run_dir}
 
 if [ "${DO_ENSEMBLE}" = TRUE ]; then
-  set_FV3nml_stoch_params cdate="$cdate" || print_err_msg_exit "\
+  set_FV3nml_stoch_params cdate="$cdate" run_dir="${run_dir}" || print_err_msg_exit "\
 Call to function to create the ensemble-based namelist for the current
 cycle's (cdate) run directory (run_dir) failed:
   cdate = \"${cdate}\"
